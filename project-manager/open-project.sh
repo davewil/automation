@@ -254,7 +254,8 @@ open_project() {
     # Pull latest changes if auto_pull is enabled
     if [ "$auto_pull" = "true" ]; then
         if [ -d .git ]; then
-            echo "Pulling latest changes..."
+            echo ""
+            echo "==> Step 1/4: Pulling latest changes..."
             git pull
 
             if [ $? -ne 0 ]; then
@@ -265,7 +266,87 @@ open_project() {
         fi
     fi
 
+    # Get project type for workflow steps
+    local project_type=$(jq -r ".[\"$project_name\"].project_type // empty" "$CONFIG_FILE")
+
+    if [ -n "$project_type" ]; then
+        # Step 2: Check dependencies
+        echo ""
+        echo "==> Step 2/4: Checking for dependency updates..."
+
+        TYPES_FILE="${OPEN_PROJECT_TYPES:-$(dirname "$0")/project-types.json}"
+
+        case "$project_type" in
+            elixir)
+                if [ -f "mix.exs" ]; then
+                    mix hex.outdated || true
+                fi
+                ;;
+            dotnet)
+                if command -v dotnet &> /dev/null; then
+                    dotnet list package --outdated || true
+                fi
+                ;;
+            node)
+                if [ -f "package.json" ]; then
+                    bun outdated || true
+                fi
+                ;;
+            go)
+                if [ -f "go.mod" ]; then
+                    go list -u -m all 2>/dev/null | grep '\[' || echo "All dependencies up to date"
+                fi
+                ;;
+            python)
+                if [ -f "requirements.txt" ]; then
+                    pip list --outdated || true
+                fi
+                ;;
+            rust)
+                if [ -f "Cargo.toml" ]; then
+                    cargo outdated || echo "Note: Install cargo-outdated for this feature (cargo install cargo-outdated)"
+                fi
+                ;;
+        esac
+
+        # Step 3: Build
+        echo ""
+        echo "==> Step 3/4: Running build..."
+        local build_cmd=$(jq -r ".[\"$project_name\"].commands.build // empty" "$CONFIG_FILE")
+        if [ -z "$build_cmd" ]; then
+            build_cmd=$(jq -r ".[\"$project_type\"].build // empty" "$TYPES_FILE")
+        fi
+
+        if [ -n "$build_cmd" ]; then
+            eval "$build_cmd" || {
+                echo "Warning: Build failed"
+            }
+        else
+            echo "No build command configured, skipping..."
+        fi
+
+        # Step 4: Test
+        echo ""
+        echo "==> Step 4/4: Running tests..."
+        local test_cmd=$(jq -r ".[\"$project_name\"].commands.test // empty" "$CONFIG_FILE")
+        if [ -z "$test_cmd" ]; then
+            test_cmd=$(jq -r ".[\"$project_type\"].test // empty" "$TYPES_FILE")
+        fi
+
+        if [ -n "$test_cmd" ]; then
+            eval "$test_cmd" || {
+                echo "Warning: Tests failed"
+            }
+        else
+            echo "No test command configured, skipping..."
+        fi
+
+        echo ""
+        echo "✓ Project ready!"
+    fi
+
     # Open with specified editor
+    echo ""
     if [ -n "$editor" ] && [ "$editor" != "null" ]; then
         echo "Opening with $editor..."
 

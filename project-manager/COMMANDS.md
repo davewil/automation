@@ -3,10 +3,20 @@
 ## Project Navigation
 
 ### `open <project>`
-Opens a project in your configured editor and starts a shell in that directory.
+Opens a project with a smart workflow that ensures your project is ready to work on.
+
+**Workflow:**
+1. Pulls latest changes (if `auto_pull` is enabled)
+2. Checks for outdated dependencies
+3. Runs build (if configured)
+4. Runs tests (if configured)
+5. Opens in your configured editor
+
 ```bash
 open grocery_planner
 ```
+
+This ensures you start with the latest code, know about dependency updates, and have a working build before you begin coding!
 
 ### `projects`
 Lists all configured projects.

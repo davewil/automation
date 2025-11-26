@@ -3,10 +3,20 @@
 ## Project Navigation
 
 ### `Open-Project <project>`
-Opens a project in your configured editor and navigates to that directory.
+Opens a project with a smart workflow that ensures your project is ready to work on.
+
+**Workflow:**
+1. Pulls latest changes (if `auto_pull` is enabled)
+2. Checks for outdated dependencies
+3. Runs build (if configured)
+4. Runs tests (if configured)
+5. Opens in your configured editor
+
 ```powershell
 Open-Project grocery_planner
 ```
+
+This ensures you start with the latest code, know about dependency updates, and have a working build before you begin coding!
 
 ### `Get-ProjectList` (alias: `projects`)
 Lists all configured projects.

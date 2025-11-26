@@ -256,14 +256,76 @@ function Open-Project {
 
     # Pull latest changes if auto_pull is enabled
     if ($autoPull -and (Test-Path ".git")) {
-        Write-Host "Pulling latest changes..."
+        Write-Host ""
+        Write-Host "==> Step 1/4: Pulling latest changes..." -ForegroundColor Cyan
         git pull
         if ($LASTEXITCODE -ne 0) {
             Write-Warning "Failed to pull latest changes"
         }
     }
 
+    # Get project type for workflow steps
+    if ($project.project_type) {
+        # Step 2: Check dependencies
+        Write-Host ""
+        Write-Host "==> Step 2/4: Checking for dependency updates..." -ForegroundColor Cyan
+
+        switch ($project.project_type) {
+            'elixir' { if (Test-Path "mix.exs") { mix hex.outdated } }
+            'dotnet' { if (Get-Command dotnet -ErrorAction SilentlyContinue) { dotnet list package --outdated } }
+            'node' { if (Test-Path "package.json") { bun outdated } }
+            'go' {
+                if (Test-Path "go.mod") {
+                    $outdated = go list -u -m all 2>$null | Select-String '\['
+                    if ($outdated) { $outdated } else { Write-Host "All dependencies up to date" }
+                }
+            }
+            'python' { if (Test-Path "requirements.txt") { pip list --outdated } }
+            'rust' {
+                if (Test-Path "Cargo.toml") {
+                    if (Get-Command cargo-outdated -ErrorAction SilentlyContinue) {
+                        cargo outdated
+                    } else {
+                        Write-Host "Note: Install cargo-outdated for this feature (cargo install cargo-outdated)"
+                    }
+                }
+            }
+        }
+
+        # Step 3: Build
+        Write-Host ""
+        Write-Host "==> Step 3/4: Running build..." -ForegroundColor Cyan
+        $buildCmd = Get-ProjectTypeCommand -ProjectType $project.project_type -CommandType 'build'
+        if ($buildCmd) {
+            Invoke-Expression $buildCmd
+            if ($LASTEXITCODE -ne 0) {
+                Write-Warning "Build failed"
+            }
+        }
+        else {
+            Write-Host "No build command configured, skipping..."
+        }
+
+        # Step 4: Test
+        Write-Host ""
+        Write-Host "==> Step 4/4: Running tests..." -ForegroundColor Cyan
+        $testCmd = Get-ProjectTypeCommand -ProjectType $project.project_type -CommandType 'test'
+        if ($testCmd) {
+            Invoke-Expression $testCmd
+            if ($LASTEXITCODE -ne 0) {
+                Write-Warning "Tests failed"
+            }
+        }
+        else {
+            Write-Host "No test command configured, skipping..."
+        }
+
+        Write-Host ""
+        Write-Host "✓ Project ready!" -ForegroundColor Green
+    }
+
     # Open with specified editor
+    Write-Host ""
     if ($editor) {
         Write-Host "Opening with $editor..."
         & $editor .
