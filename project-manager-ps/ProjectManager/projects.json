@@ -1,0 +1,10 @@
+{
+  "example-project": {
+    "github": "git@github.com:username/example-project.git",
+    "local_path": "C:\\Users\\YourName\\projects\\example-project",
+    "editor": "code",
+    "auto_pull": true,
+    "description": "Example project configuration",
+    "project_type": "dotnet"
+  }
+}
