@@ -4,7 +4,7 @@ A collection of automation tools for development workflow management.
 
 ## Project Manager
 
-A comprehensive tool for managing, building, testing, and deploying your projects across different languages and frameworks. Available for both Linux/macOS (Bash/Zsh) and Windows (PowerShell).
+A comprehensive tool for managing, building, testing, and deploying your projects across different languages and frameworks. Available for both Linux/macOS (Bash/Zsh), Windows (PowerShell), and as an MCP server for AI assistants.
 
 ### Features
 
@@ -55,6 +55,18 @@ Import-Module ProjectManager
 ```
 
 **Configuration location:** `~/.config/project-manager/projects.json`
+
+### MCP Server (For AI Assistants)
+
+For use with Claude Desktop, Claude Code, Cline, or other MCP-compatible AI assistants:
+
+```bash
+cd project-manager-mcp
+npm install
+npm run build
+```
+
+Then add to your AI assistant's MCP configuration. See [project-manager-mcp/README.md](project-manager-mcp/README.md) for detailed setup instructions.
 
 ## Quick Start
 
@@ -352,6 +364,27 @@ The same `projects.json` format works on both platforms (just adjust paths):
   }
 }
 ```
+
+## Available Versions
+
+This repository contains three versions of Project Manager:
+
+1. **[project-manager/](project-manager/)** - Bash/Zsh version for Linux and macOS
+   - Shell-based automation
+   - Tab completion for bash and zsh
+   - Integrates with system shell
+
+2. **[project-manager-ps/](project-manager-ps/)** - PowerShell version for Windows
+   - PowerShell module
+   - Windows-native implementation
+   - PowerShell verb-noun conventions with bash-like aliases
+
+3. **[project-manager-mcp/](project-manager-mcp/)** - MCP Server for AI Assistants
+   - Model Context Protocol server
+   - Works with Claude Desktop, Claude Code, Cline, etc.
+   - Exposes project management tools to AI assistants
+
+All versions share the same configuration format and feature set!
 
 ## Contributing
 
