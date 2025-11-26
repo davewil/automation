@@ -1,0 +1,56 @@
+{
+  "elixir": {
+    "name": "Elixir (Mix)",
+    "build": "mix compile",
+    "test": "mix test",
+    "run": "mix phx.server",
+    "watch": "mix phx.server",
+    "format": "mix format",
+    "deps": "mix deps.get"
+  },
+  "dotnet": {
+    "name": ".NET (C#/F#)",
+    "build": "dotnet build",
+    "test": "dotnet test",
+    "run": "dotnet run",
+    "watch": "dotnet watch run",
+    "format": "dotnet format",
+    "deps": "dotnet restore"
+  },
+  "node": {
+    "name": "Node.js/TypeScript",
+    "build": "bun run build",
+    "test": "bun test",
+    "run": "bun run start",
+    "watch": "bun run dev",
+    "format": "bun run format",
+    "deps": "bun install"
+  },
+  "go": {
+    "name": "Go",
+    "build": "go build",
+    "test": "go test ./...",
+    "run": "go run .",
+    "watch": "air",
+    "format": "go fmt ./...",
+    "deps": "go mod download"
+  },
+  "python": {
+    "name": "Python",
+    "build": "python -m py_compile *.py",
+    "test": "pytest",
+    "run": "python main.py",
+    "watch": "watchmedo auto-restart --patterns='*.py' --recursive -- python main.py",
+    "format": "black .",
+    "deps": "pip install -r requirements.txt"
+  },
+  "rust": {
+    "name": "Rust",
+    "build": "cargo build",
+    "test": "cargo test",
+    "run": "cargo run",
+    "watch": "cargo watch -x run",
+    "format": "cargo fmt",
+    "deps": "cargo fetch"
+  }
+}

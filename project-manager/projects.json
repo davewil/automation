@@ -1,0 +1,18 @@
+{
+  "grocery_planner": {
+    "github": "git@github.com:yourusername/grocery_planner.git",
+    "local_path": "/home/david/projects/grocery_planner",
+    "editor": "code",
+    "auto_pull": true,
+    "description": "Grocery planning application",
+    "project_type": "elixir"
+  },
+  "go-by-example": {
+    "github": "git@github.com:yourusername/go-by-example.git",
+    "local_path": "/mnt/usb-drive/Development/go/go-by-example",
+    "editor": "vim",
+    "auto_pull": false,
+    "description": "Learning Go by example",
+    "project_type": "go"
+  }
+}
