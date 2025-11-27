@@ -94,6 +94,60 @@ Navigate between projects while managing context, uncommitted changes, and ensur
 
 ---
 
+### Phase 3 - Team & Maintenance (Ready to Use)
+
+#### 7. **project-onboarding** - Generate Comprehensive Onboarding Documentation
+Automatically generate onboarding documentation for new team members. Analyzes project structure, detects prerequisites, creates installation guides, documents architecture, and provides troubleshooting tips.
+
+**Use when:**
+- Onboarding new team members
+- Open-sourcing a project
+- Improving contributor experience
+- Creating handoff documentation
+
+**Example:** "Create onboarding docs for grocery-planner"
+
+---
+
+#### 8. **multi-project-sync** - Synchronize All Projects
+Sync multiple projects in one operation. Pulls latest changes, checks health, identifies outdated dependencies, and generates comprehensive reports. Perfect for Monday mornings or after time away.
+
+**Use when:**
+- Monday morning routine
+- After vacation or time away
+- Weekly project maintenance
+- Checking all projects at once
+
+**Example:** "Sync all my projects"
+
+---
+
+#### 9. **release-helper** - Guided Release Management
+Guide through creating production releases with version bumping, changelog generation, testing, tagging, and deployment. Ensures nothing is forgotten in the release process.
+
+**Use when:**
+- Ready to create a release
+- Need to generate changelogs
+- Want automated version bumping
+- Following semantic versioning
+
+**Example:** "Create a patch release for api-server"
+
+---
+
+#### 10. **project-cleaner** - Clean Up and Optimize
+Clean build artifacts, caches, and optimize storage. Reclaim disk space, fix corrupted caches, and keep projects lean. Provides safe, standard, and deep cleaning options.
+
+**Use when:**
+- Disk space is low
+- Build is mysteriously slow
+- Corrupted cache suspected
+- Monthly maintenance
+
+**Example:** "Clean up my projects to free disk space"
+
+---
+
 ## Installation
 
 ### Prerequisites
@@ -187,6 +241,46 @@ I'll help you switch to api-server. Let me check your current state first...
 [Handles uncommitted changes, switches, sets up environment]
 ```
 
+**Creating onboarding docs:**
+```
+You: "Create onboarding documentation for my project"
+
+Claude: [Uses project-onboarding skill]
+I'll generate comprehensive onboarding docs for new contributors...
+
+[Analyzes structure, generates prerequisites, installation, troubleshooting]
+```
+
+**Monday morning sync:**
+```
+You: "Sync all my projects"
+
+Claude: [Uses multi-project-sync skill]
+I'll sync all 6 projects and give you a status overview...
+
+[Pulls updates, checks health, identifies issues, generates report]
+```
+
+**Creating a release:**
+```
+You: "Create a patch release"
+
+Claude: [Uses release-helper skill]
+I'll guide you through creating a patch release...
+
+[Bumps version, generates changelog, tests, tags, pushes]
+```
+
+**Cleaning projects:**
+```
+You: "Free up disk space in my projects"
+
+Claude: [Uses project-cleaner skill]
+I'll analyze disk usage and clean up artifacts...
+
+[Shows reclaimable space, offers cleaning strategies, verifies after]
+```
+
 ## How Skills Work
 
 ### Skill Structure
@@ -264,13 +358,17 @@ See the [examples/](examples/) directory for detailed walkthroughs:
 ### Phase 2 Examples
 - [Updating dependencies](examples/update-dependencies.md) - Using **dependency-manager** skill
 
-## Future Skills (Planned)
+### Phase 3 Examples
+- [Monday morning sync](examples/monday-morning-sync.md) - Using **multi-project-sync** skill
 
-### Phase 3 - Team & Maintenance
-- **project-onboarding**: Generate onboarding documentation
-- **multi-project-sync**: Sync all projects at once
-- **release-helper**: Guided release management
-- **project-cleaner**: Clean up artifacts and optimize
+## Skills Roadmap
+
+**✅ Complete (10 skills):**
+- Phase 1: project-setup, project-health-check, project-workflow
+- Phase 2: dependency-manager, build-fixer, project-switcher
+- Phase 3: project-onboarding, multi-project-sync, release-helper, project-cleaner
+
+All planned skills have been implemented and are production-ready!
 
 ## Contributing
 
