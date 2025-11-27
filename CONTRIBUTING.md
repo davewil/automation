@@ -102,10 +102,26 @@ npm run build
 
 Test that it works:
 ```bash
-npm run dev
-# In another terminal:
-echo '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' | nc localhost 3000
+# Method 1: Use MCP Inspector (recommended for development)
+npx @modelcontextprotocol/inspector node dist/index.js
+
+# Method 2: Manual test via stdin
+echo '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' | node dist/index.js
 ```
+
+To use with Claude Code, add to `~/.config/claude-code/mcp_settings.json`:
+```json
+{
+  "mcpServers": {
+    "project-manager": {
+      "command": "node",
+      "args": ["/absolute/path/to/automation/project-manager-mcp/dist/index.js"]
+    }
+  }
+}
+```
+
+See [project-manager-mcp/README.md](project-manager-mcp/README.md) for complete setup instructions.
 
 ### Claude Skills
 
