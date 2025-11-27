@@ -424,8 +424,8 @@ Have an idea? Here's how to suggest it:
 
 Keep track of ideas that make it to production:
 
-- [ ] CONTRIBUTING.md
-- [ ] Architecture Documentation
+- [x] CONTRIBUTING.md (✅ Completed: November 27, 2025)
+- [x] Architecture Documentation (✅ Completed: November 27, 2025)
 - [ ] Automated Tests
 - [ ] Unified Installer
 - [ ] Update Mechanism
