@@ -53,6 +53,47 @@ Guides you through a complete professional development workflow from branching t
 
 ---
 
+### Phase 2 - Developer Experience (Ready to Use)
+
+#### 4. **dependency-manager** - Intelligent Dependency Update Guide
+Safely update project dependencies with risk analysis, breaking change detection, and incremental updates. Categorizes updates by risk level and guides through migration of breaking changes.
+
+**Use when:**
+- Updating project dependencies
+- After security vulnerability notifications
+- Monthly/quarterly maintenance
+- Before major feature work
+
+**Example:** "Check and update dependencies for grocery-planner"
+
+---
+
+#### 5. **build-fixer** - Automated Build Troubleshooting
+Intelligent build troubleshooting that analyzes failures, identifies root causes, and provides step-by-step fixes. Handles dependency errors, compilation issues, version conflicts, and more.
+
+**Use when:**
+- Build command fails
+- Compilation errors after updates
+- After pulling changes from remote
+- After switching branches
+
+**Example:** "Build is failing, help me fix it"
+
+---
+
+#### 6. **project-switcher** - Smart Project Navigation
+Navigate between projects while managing context, uncommitted changes, and ensuring clean transitions. Handles stashing, branch tracking, and environment setup.
+
+**Use when:**
+- Switching between projects
+- Context switching between tasks
+- Need to check multiple projects
+- Want to see all available projects
+
+**Example:** "Switch to api-server project"
+
+---
+
 ## Installation
 
 ### Prerequisites
@@ -114,6 +155,36 @@ I'll guide you through implementing user authentication. Let's start
 by understanding what you want to build...
 
 [Guides through branching, implementation, testing, committing, PR creation]
+```
+
+**Updating dependencies:**
+```
+You: "Check and update dependencies for grocery-planner"
+
+Claude: [Uses dependency-manager skill]
+I'll help you update dependencies. Let me check what's outdated...
+
+[Analyzes dependencies by risk, updates incrementally, tests each phase]
+```
+
+**Fixing a build:**
+```
+You: "Build is broken after I pulled latest changes"
+
+Claude: [Uses build-fixer skill]
+Let me analyze the build error and help you fix it...
+
+[Diagnoses issue, identifies root cause, provides step-by-step fix]
+```
+
+**Switching projects:**
+```
+You: "Switch to api-server"
+
+Claude: [Uses project-switcher skill]
+I'll help you switch to api-server. Let me check your current state first...
+
+[Handles uncommitted changes, switches, sets up environment]
 ```
 
 ## How Skills Work
@@ -187,16 +258,13 @@ Skills provide:
 
 See the [examples/](examples/) directory for detailed walkthroughs:
 
-- [Setting up a new project](examples/setup-new-project.md)
-- [Complete feature implementation](examples/implement-feature.md)
-- [Fixing a build issue](examples/fix-build-issue.md)
+### Phase 1 Examples
+- [Setting up a new project](examples/setup-new-project.md) - Using **project-setup** skill
+
+### Phase 2 Examples
+- [Updating dependencies](examples/update-dependencies.md) - Using **dependency-manager** skill
 
 ## Future Skills (Planned)
-
-### Phase 2 - Developer Experience
-- **dependency-manager**: Intelligent dependency updates with breaking change detection
-- **build-fixer**: Automated build troubleshooting
-- **project-switcher**: Smart project navigation with context switching
 
 ### Phase 3 - Team & Maintenance
 - **project-onboarding**: Generate onboarding documentation
