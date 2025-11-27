@@ -12,17 +12,124 @@ import { existsSync, readFileSync } from "fs";
 import { homedir } from "os";
 import { join } from "path";
 
-// Get config path
+// Get config paths
 const CONFIG_PATH =
   process.env.OPEN_PROJECT_CONFIG ||
   join(homedir(), ".config", "project-manager", "projects.json");
 
+const PROJECT_TYPES_PATH =
+  process.env.OPEN_PROJECT_TYPES ||
+  join(homedir(), ".config", "project-manager", "project-types.json");
+
+// Type definitions
+interface ProjectConfig {
+  github?: string;
+  local_path: string;
+  editor?: string;
+  auto_pull?: boolean;
+  description?: string;
+  project_type?: string;
+  commands?: {
+    build?: string;
+    test?: string;
+    run?: string;
+    watch?: string;
+    format?: string;
+    deps?: string;
+    outdated?: string;
+  };
+}
+
+interface ProjectTypeDefinition {
+  name: string;
+  build?: string;
+  test?: string;
+  run?: string;
+  watch?: string;
+  format?: string;
+  deps?: string;
+  outdated?: string;
+}
+
+interface ProjectsConfig {
+  [projectName: string]: ProjectConfig;
+}
+
+interface ProjectTypesConfig {
+  [typeName: string]: ProjectTypeDefinition;
+}
+
 // Helper to read projects config
-function getProjectConfig() {
+function getProjectConfig(): ProjectsConfig {
   if (!existsSync(CONFIG_PATH)) {
-    throw new Error(`Configuration file not found at ${CONFIG_PATH}`);
+    throw new Error(
+      `Configuration file not found at ${CONFIG_PATH}\n\n` +
+        `Please set up Project Manager:\n` +
+        `  1. Install bash version: cd project-manager && ./install.sh\n` +
+        `  2. Or create config manually at ${CONFIG_PATH}\n` +
+        `  3. See README for setup instructions`
+    );
   }
   return JSON.parse(readFileSync(CONFIG_PATH, "utf-8"));
+}
+
+// Helper to read project types config
+function getProjectTypesConfig(): ProjectTypesConfig {
+  if (!existsSync(PROJECT_TYPES_PATH)) {
+    // Return empty config if types file doesn't exist
+    console.error(`Warning: Project types file not found at ${PROJECT_TYPES_PATH}`);
+    return {};
+  }
+  return JSON.parse(readFileSync(PROJECT_TYPES_PATH, "utf-8"));
+}
+
+// Helper to resolve command for a project (mimics bash script logic)
+function getProjectCommand(
+  projectName: string,
+  commandType: "build" | "test" | "run" | "outdated"
+): string {
+  const config = getProjectConfig();
+  const project = config[projectName];
+
+  if (!project) {
+    throw new Error(`Project '${projectName}' not found`);
+  }
+
+  // Step 1: Check project-specific custom command
+  if (project.commands && project.commands[commandType]) {
+    return project.commands[commandType]!;
+  }
+
+  // Step 2: Get project type default
+  if (project.project_type) {
+    const projectTypes = getProjectTypesConfig();
+    const typeConfig = projectTypes[project.project_type];
+
+    if (typeConfig && typeConfig[commandType]) {
+      return typeConfig[commandType]!;
+    }
+  }
+
+  // Step 3: Handle outdated command specially (type-specific logic)
+  if (commandType === "outdated" && project.project_type) {
+    const outdatedCommands: { [key: string]: string } = {
+      elixir: "mix hex.outdated",
+      dotnet: "dotnet list package --outdated",
+      node: "npm outdated",
+      go: "go list -u -m all",
+      python: "pip list --outdated",
+      rust: "cargo outdated",
+    };
+
+    if (outdatedCommands[project.project_type]) {
+      return outdatedCommands[project.project_type];
+    }
+  }
+
+  throw new Error(
+    `No ${commandType} command configured for project '${projectName}'.\n` +
+      `Either add a custom command in projects.json or ensure project_type is set correctly.`
+  );
 }
 
 // Helper to execute shell commands
@@ -181,7 +288,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     switch (name) {
       case "list_projects": {
         const config = getProjectConfig();
-        const projects = Object.entries(config).map(([name, proj]: [string, any]) => ({
+        const projects = Object.entries(config).map(([name, proj]) => ({
           name,
           description: proj.description || "",
           type: proj.project_type || "unknown",
@@ -232,8 +339,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           throw new Error(`Project directory not found at ${localPath}`);
         }
 
-        // Use project-command script
-        const output = executeCommand(`project-command build ${project_name}`);
+        // Get build command using standalone resolution
+        const buildCommand = getProjectCommand(project_name, "build");
+        const output = executeCommand(buildCommand, localPath);
 
         return {
           content: [
@@ -260,7 +368,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           throw new Error(`Project directory not found at ${localPath}`);
         }
 
-        const output = executeCommand(`project-command test ${project_name}`);
+        // Get test command using standalone resolution
+        const testCommand = getProjectCommand(project_name, "test");
+        const output = executeCommand(testCommand, localPath);
 
         return {
           content: [
@@ -287,7 +397,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           throw new Error(`Project directory not found at ${localPath}`);
         }
 
-        const output = executeCommand(`project-command run ${project_name}`);
+        // Get run command using standalone resolution
+        const runCommand = getProjectCommand(project_name, "run");
+        const output = executeCommand(runCommand, localPath);
 
         return {
           content: [
@@ -314,7 +426,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           throw new Error(`Project directory not found at ${localPath}`);
         }
 
-        const output = executeCommand(`project-command outdated ${project_name}`);
+        // Get outdated command using standalone resolution
+        const outdatedCommand = getProjectCommand(project_name, "outdated");
+        const output = executeCommand(outdatedCommand, localPath);
 
         return {
           content: [

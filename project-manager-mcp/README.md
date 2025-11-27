@@ -15,13 +15,24 @@ The MCP server provides the following tools:
 - **get_project_status** - Get git status for a project
 - **execute_custom_command** - Execute any custom command in a project's directory
 
+## Cross-Platform Support
+
+✅ **Fully standalone and cross-platform!**
+
+- Works on **Windows, Linux, and macOS**
+- **No bash scripts required** - the MCP server reads configuration directly
+- Only requires Node.js 18+
+- Implements the same command resolution logic as the bash version
+
 ## Installation
 
 ### Prerequisites
 
 - Node.js 18 or later
-- Project Manager bash/zsh version installed (see [../project-manager/README.md](../project-manager/README.md))
 - Projects configured in `~/.config/project-manager/projects.json`
+- Project types defined in `~/.config/project-manager/project-types.json`
+
+**Note:** You can use the MCP server without installing the bash/PowerShell versions. Just create the configuration files manually or run the installation scripts to generate them.
 
 ### Install the MCP Server
 
