@@ -1,4 +1,4 @@
-#compdef projects open
+#compdef projects open build test run watch push outdated gotoproject
 
 # Zsh completion for project manager
 
