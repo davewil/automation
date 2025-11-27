@@ -71,6 +71,27 @@ fi
 echo "Installing project types to $CONFIG_DIR/project-types.json..."
 cp "$SCRIPT_DIR/project-types.json" "$CONFIG_DIR/project-types.json"
 
+# Install Claude Code skills (if Claude Code is installed)
+CLAUDE_SKILLS_DIR="$HOME/.config/claude-code/skills"
+SKILLS_SOURCE_DIR="$SCRIPT_DIR/../project-manager-skills/skills"
+
+if [ -d "$SKILLS_SOURCE_DIR" ]; then
+    echo "Installing Claude Code skills..."
+    mkdir -p "$CLAUDE_SKILLS_DIR"
+
+    # Create symlinks for all skill files
+    for skill in "$SKILLS_SOURCE_DIR"/*.md; do
+        if [ -f "$skill" ]; then
+            skill_name=$(basename "$skill")
+            ln -sf "$skill" "$CLAUDE_SKILLS_DIR/$skill_name"
+        fi
+    done
+
+    echo "Claude Code skills installed to $CLAUDE_SKILLS_DIR/"
+else
+    echo "Skills directory not found at $SKILLS_SOURCE_DIR (skipping skills installation)"
+fi
+
 # Install completions
 echo "Installing shell completions..."
 if [ "$SHELL_NAME" = "zsh" ]; then
@@ -248,3 +269,7 @@ echo "  projects                 - List all projects"
 echo "  projects --clone <name>  - Clone a project from GitHub"
 echo "  projects --edit          - Edit projects configuration"
 echo "  projects --help          - Show help"
+echo ""
+echo "Claude Code Skills:"
+echo "  10 AI assistant skills installed to $CLAUDE_SKILLS_DIR"
+echo "  Use them in Claude Code for project management workflows"
