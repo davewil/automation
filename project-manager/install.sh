@@ -159,7 +159,9 @@ outdated() {
     $INSTALL_DIR/project-command outdated \"\$@\"
 }
 
-goto() {
+# gotoproject - Navigate to a project directory
+# Named 'gotoproject' to avoid conflicts with 'goto' from Go tools
+gotoproject() {
     local project_path=\$($INSTALL_DIR/goto-project \"\$1\")
     if [ \$? -eq 0 ]; then
         cd \"\$project_path\" || return 1
@@ -220,7 +222,9 @@ outdated() {
     $INSTALL_DIR/project-command outdated \"\$@\"
 }
 
-goto() {
+# gotoproject - Navigate to a project directory
+# Named 'gotoproject' to avoid conflicts with 'goto' from Go tools
+gotoproject() {
     local project_path=\$($INSTALL_DIR/goto-project \"\$1\")
     if [ \$? -eq 0 ]; then
         cd \"\$project_path\" || return 1

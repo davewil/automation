@@ -70,7 +70,7 @@ _project_command() {
     _describe 'project' projects
 }
 
-_goto() {
+_gotoproject() {
     local -a projects
     projects=(${(f)"$(_get_projects)"})
 
@@ -85,4 +85,4 @@ compdef _project_command run
 compdef _project_command watch
 compdef _project_command push
 compdef _project_command outdated
-compdef _goto goto
+compdef _gotoproject gotoproject
