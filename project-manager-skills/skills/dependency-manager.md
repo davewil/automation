@@ -1,3 +1,8 @@
+---
+name: dependency-manager
+description: Safely update project dependencies with risk analysis and testing
+---
+
 # Dependency Manager - Intelligent Dependency Update Guide
 
 ## Description

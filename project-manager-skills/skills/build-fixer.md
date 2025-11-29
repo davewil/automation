@@ -1,3 +1,8 @@
+---
+name: build-fixer
+description: Troubleshoot and fix build failures with intelligent error analysis
+---
+
 # Build Fixer - Automated Build Troubleshooting
 
 ## Description

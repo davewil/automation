@@ -1,3 +1,8 @@
+---
+name: project-switcher
+description: Navigate between projects with smart context management
+---
+
 # Project Switcher - Smart Project Navigation and Context Switching
 
 ## Description

@@ -1,3 +1,8 @@
+---
+name: project-workflow
+description: Guide through complete development workflow from branching to deployment
+---
+
 # Project Workflow - Smart Development Workflow Guide
 
 ## Description

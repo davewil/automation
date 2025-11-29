@@ -1,3 +1,8 @@
+---
+name: project-health-check
+description: Comprehensive project analysis with health scoring and recommendations
+---
+
 # Project Health Check - Comprehensive Project Analysis
 
 ## Description

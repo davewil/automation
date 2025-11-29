@@ -1,3 +1,8 @@
+---
+name: project-onboarding
+description: Generate comprehensive onboarding documentation for new contributors
+---
+
 # Project Onboarding - Generate Comprehensive Onboarding Documentation
 
 ## Description

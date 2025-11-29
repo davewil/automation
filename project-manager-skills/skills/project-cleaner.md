@@ -1,3 +1,8 @@
+---
+name: project-cleaner
+description: Clean build artifacts and optimize project storage
+---
+
 # Project Cleaner - Clean Up Artifacts and Optimize
 
 ## Description

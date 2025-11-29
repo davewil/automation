@@ -1,3 +1,8 @@
+---
+name: project-setup
+description: Add a new project to Project Manager using the projects --add command
+---
+
 # Project Setup - New Project Setup Wizard
 
 ## Description

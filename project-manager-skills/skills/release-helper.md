@@ -1,3 +1,8 @@
+---
+name: release-helper
+description: Create production releases with version bumping and changelog generation
+---
+
 # Release Helper - Guided Release Management
 
 ## Description

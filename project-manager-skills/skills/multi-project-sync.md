@@ -1,3 +1,8 @@
+---
+name: multi-project-sync
+description: Synchronize all projects with latest changes and health checks
+---
+
 # Multi-Project Sync - Synchronize All Projects at Once
 
 ## Description
