@@ -237,14 +237,19 @@ push_project() {
         exit 1
     fi
 
-    echo "==> Step 1/6: Pulling latest changes..."
+    echo "==> Step 1/7: Staging local changes..."
+    # Stage changes first so pull doesn't fail on unstaged files
+    git add . || exit 1
+
+    echo ""
+    echo "==> Step 2/7: Pulling latest changes..."
     git pull || {
         echo "Error: Failed to pull changes. Please resolve conflicts manually."
         exit 1
     }
 
     echo ""
-    echo "==> Step 2/6: Checking for dependency updates..."
+    echo "==> Step 3/7: Checking for dependency updates..."
     local deps_cmd=$(get_project_command "$project_name" "deps")
     local project_type=$(get_project_config "$project_name" "project_type")
 
@@ -321,7 +326,7 @@ push_project() {
     fi
 
     echo ""
-    echo "==> Step 3/6: Running build..."
+    echo "==> Step 4/7: Running build..."
     local build_cmd=$(get_project_command "$project_name" "build")
     if [ -n "$build_cmd" ]; then
         eval "$build_cmd" || {
@@ -333,7 +338,7 @@ push_project() {
     fi
 
     echo ""
-    echo "==> Step 4/6: Running tests..."
+    echo "==> Step 5/7: Running tests..."
     local test_cmd=$(get_project_command "$project_name" "test")
     if [ -n "$test_cmd" ]; then
         eval "$test_cmd" || {
@@ -345,8 +350,8 @@ push_project() {
     fi
 
     echo ""
-    echo "==> Step 5/6: Committing changes..."
-    git add . || exit 1
+    echo "==> Step 6/7: Committing changes..."
+    # Changes already staged in step 1
 
     # Check if there are changes to commit
     if git diff --staged --quiet; then
@@ -356,7 +361,7 @@ push_project() {
     fi
 
     echo ""
-    echo "==> Step 6/6: Pushing to remote..."
+    echo "==> Step 7/7: Pushing to remote..."
     git push || {
         echo "Error: Failed to push changes"
         exit 1
